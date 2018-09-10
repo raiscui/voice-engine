@@ -13,13 +13,14 @@ default_mic = sc.default_microphone()
 
 
 class Source(Element):
-    def __init__(self, rate=16000, frames_size=None, channels=1, device_name='default', bits_per_sample=16):
+    def __init__(self, rate=16000, frames_size=1280, channels=1, device_name='default', bits_per_sample=16):
         super(Source, self).__init__()
         self.mic = None
         self.rate = rate
         self.channels = channels
         self.done = False
         self.count = 0
+        self.frames_size = frames_size
 
         if device_name:
             try:
@@ -32,10 +33,11 @@ class Source(Element):
             with self.mic.recorder(samplerate=self.rate, channels=self.channels) as mic:
                 while not self.done:
                     data = mic.flush()
-                    super(Source, self).put(data)
+                    if len(data):
+                        super(Source, self).put(data)
                     self.count = 0
                     while self.count < 1000 and not self.done:
-                        data = mic.record(numframes=1024)
+                        data = mic.record(numframes=self.frames_size)
                         super(Source, self).put(data)
 
         except Exception as e:
