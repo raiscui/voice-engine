@@ -36,6 +36,7 @@ class Source(Element):
 
     def run(self):
         self.logger.warn('in run')
+        self.logger.warn(self.mic.name)
 
         try:
             with self.mic.recorder(samplerate=self.rate, channels=self.channels) as mic:
@@ -47,6 +48,8 @@ class Source(Element):
                     self.count = 0
                     while self.count < 1000 and not self.done:
                         data = mic.record(numframes=self.frames_size)
+                        self.logger.debug(
+                            'recorded frames:{}'.format(self.frames_size))
                         super(Source, self).put(data)
 
         except Exception as e:
