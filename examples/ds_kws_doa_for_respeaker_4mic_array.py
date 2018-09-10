@@ -12,19 +12,16 @@ from voice_engine.kws import KWS
 from voice_engine.doa_respeaker_4mic_array import DOA
 from voice_engine.delay_sum import DelaySum
 from pixel_ring import pixel_ring
-from pixel_ring.echo import Pattern
-from gpiozero import LED
+pixel_ring.change_pattern('echo')
 
-pixel_ring.change_pattern(Pattern)
-power = LED(5)
-power.on()
 
 max_offset = int(16000 * 0.081 / 340)
 
 
 def main():
     src = Source(rate=16000, frames_size=320, channels=4)
-    ds = DelaySum(channels=4, frames_size=src.frames_size, max_offset=max_offset)
+    ds = DelaySum(channels=4, frames_size=src.frames_size,
+                  max_offset=max_offset)
     kws = KWS()
     doa = DOA(rate=16000, chunks=20)
 

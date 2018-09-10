@@ -13,7 +13,7 @@ if sys.version_info[0] < 3:
 else:
     import queue
 
-from snowboy import snowboydetect
+import snowboydetect
 
 from .element import Element
 
@@ -24,7 +24,8 @@ class KWS(Element):
 
         self.verbose = verbose
 
-        resource_path = os.path.join(os.path.dirname(snowboydetect.__file__), 'resources')
+        resource_path = os.path.join(os.path.dirname(
+            snowboydetect.__file__), 'resources')
         common_resource = os.path.join(resource_path, 'common.res')
 
         for model_path in [resource_path, os.path.join(resource_path, 'models')]:
@@ -33,10 +34,12 @@ class KWS(Element):
                 model = builtin_model
                 break
         if model == 'alexa':
-            alexa_model = os.path.join(resource_path, 'alexa', 'alexa_02092017.umdl')
+            alexa_model = os.path.join(
+                resource_path, 'alexa', 'alexa_02092017.umdl')
             if os.path.isfile(alexa_model):
                 model = alexa_model
-        self.detector = snowboydetect.SnowboyDetect(common_resource.encode(), model.encode())
+        self.detector = snowboydetect.SnowboyDetect(
+            common_resource.encode(), model.encode())
         # self.detector.SetAudioGain(1)
         # self.detector.ApplyFrontend(True)
         self.detector.SetSensitivity(str(sensitivity).encode())

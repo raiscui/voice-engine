@@ -32,7 +32,7 @@ def main():
     for channel in range(2):
         k = KWS(model='snowboy', sensitivity=0.6)
         k.on_detected = get_kws_callback(channel)
-        
+
         kws.append(k)
 
 
