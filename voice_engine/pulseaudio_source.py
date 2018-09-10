@@ -44,13 +44,13 @@ class Source(Element):
                 while not self.done:
                     data = mic.flush()
                     if len(data):
-                        super(Source, self).put(data)
+                        super(Source, self).put(data.tostring())
                     self.count = 0
                     while self.count < 1000 and not self.done:
                         data = mic.record(numframes=self.frames_size)
                         self.logger.debug(
                             'recorded frames:{}'.format(self.frames_size))
-                        super(Source, self).put(data)
+                        super(Source, self).put(data.tostring())
 
         except Exception as e:
             self.logger.error(e)
